@@ -1,26 +1,24 @@
 @import "tailwindcss";
 
 :root {
-  /* Core neutrals — deep, almost-black backgrounds with warmth */
-  --qima-bg: #090f0c;
-  --qima-bg-soft: #0d1511;
-  --qima-surface: #131d18;
-  --qima-surface-high: #1a2a22;
-  --qima-border: #223228;
+  /* QIMA official palette */
+  --qima-bg: #08110f;
+  --qima-bg-soft: #0c1815;
+  --qima-surface: #1c2920;
+  --qima-surface-high: #2a3e2c;
+  --qima-border: #2d462e;
 
-  /* Accent green — used deliberately, not everywhere */
-  --qima-accent: #3ecf8e;
-  --qima-accent-soft: #7fe0b3;
-  --qima-accent-dim: #2a5c44;
+  --qima-accent: #6a8a69;
+  --qima-accent-soft: #748b68;
+  --qima-accent-deep: #2d462e;
 
-  /* Text hierarchy */
-  --qima-text: #f2f5f3;
-  --qima-text-mute: #a3b3ac;
-  --qima-text-faint: #5c6b64;
+  --qima-text: #ffffff;
+  --qima-text-mute: #a8b5a9;
+  --qima-text-faint: #5e7266;
 
-  /* Secondary accents for variety (icons, small details) */
-  --qima-gold: #c9a15a;
-  --qima-blue: #6fa3d8;
+  --qima-mercury-1: #a8b5a9;
+  --qima-mercury-2: #6a8a69;
+  --qima-mercury-3: #8fa58a;
 
   --qima-whatsapp: #25d366;
 
@@ -37,12 +35,10 @@
   --color-border: var(--qima-border);
   --color-accent: var(--qima-accent);
   --color-accent-soft: var(--qima-accent-soft);
-  --color-accent-dim: var(--qima-accent-dim);
+  --color-accent-deep: var(--qima-accent-deep);
   --color-text: var(--qima-text);
   --color-text-mute: var(--qima-text-mute);
   --color-text-faint: var(--qima-text-faint);
-  --color-gold: var(--qima-gold);
-  --color-blue: var(--qima-blue);
   --color-whatsapp: var(--qima-whatsapp);
 
   --font-display: var(--font-display);
@@ -107,15 +103,16 @@ select:focus-visible {
   border-radius: 4px;
 }
 
+/* Real glassmorphism — strong blur + saturation + subtle noise + gradient border */
 .glass-nav {
   background: linear-gradient(
     180deg,
-    rgba(13, 21, 17, 0.6) 0%,
-    rgba(13, 21, 17, 0.4) 100%
+    rgba(12, 24, 21, 0.65) 0%,
+    rgba(12, 24, 21, 0.45) 100%
   );
-  backdrop-filter: blur(20px) saturate(160%) brightness(1.05);
-  -webkit-backdrop-filter: blur(20px) saturate(160%) brightness(1.05);
-  border: 1px solid rgba(62, 207, 142, 0.1);
+  backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+  -webkit-backdrop-filter: blur(24px) saturate(180%) brightness(1.08);
+  border: 1px solid rgba(168, 181, 169, 0.12);
   position: relative;
 }
 
@@ -127,9 +124,9 @@ select:focus-visible {
   padding: 1px;
   background: linear-gradient(
     120deg,
-    rgba(62, 207, 142, 0.3),
-    rgba(255, 255, 255, 0.05) 40%,
-    rgba(62, 207, 142, 0.06) 100%
+    rgba(168, 181, 169, 0.4),
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(106, 138, 105, 0.15) 100%
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
@@ -142,9 +139,100 @@ select:focus-visible {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  opacity: 0.03;
+  opacity: 0.025;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Generic glass surface for cards / testimonials / video frames */
+.glass-surface {
+  background: linear-gradient(
+    145deg,
+    rgba(28, 41, 32, 0.5) 0%,
+    rgba(28, 41, 32, 0.25) 100%
+  );
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border: 1px solid rgba(168, 181, 169, 0.1);
+  position: relative;
+}
+
+/* Mercury-style animated gradient border, used on primary buttons */
+.mercury-border {
+  position: relative;
+  isolation: isolate;
+}
+.mercury-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    115deg,
+    var(--qima-mercury-1) 0%,
+    var(--qima-mercury-2) 25%,
+    var(--qima-mercury-3) 50%,
+    var(--qima-mercury-2) 75%,
+    var(--qima-mercury-1) 100%
+  );
+  background-size: 250% 250%;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: mercury-flow 6s ease infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+@keyframes mercury-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Shine sweep on hover, used on primary CTAs */
+.shine-sweep {
+  position: relative;
+  overflow: hidden;
+}
+.shine-sweep::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+.shine-sweep:hover::after {
+  left: 130%;
+}
+
+/* Gradient text: soft green flowing into silver-white */
+.text-cosmic-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--qima-text) 0%,
+    var(--qima-accent-soft) 35%,
+    var(--qima-text-mute) 60%,
+    var(--qima-text) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cosmic-shift 8s ease-in-out infinite;
+}
+@keyframes cosmic-shift {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 
 .text-balance {

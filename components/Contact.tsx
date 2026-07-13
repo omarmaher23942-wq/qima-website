@@ -16,7 +16,7 @@ export function Contact() {
             {t.contact.eyebrow}
           </p>
         </Reveal>
-        <Reveal direction="up" delay={120}>
+        <Reveal direction="spring-up" delay={100} distance={55}>
           <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-balance max-w-2xl mx-auto leading-tight">
             {t.contact.title}
           </h2>

@@ -8,7 +8,7 @@ export function WhyQima() {
   const { t } = useLanguage();
 
   return (
-    <section className="relative py-28 sm:py-36 bg-bg-soft border-y border-border">
+    <section className="relative py-28 sm:py-36 border-y border-border">
       <div className="mx-auto max-w-6xl px-6 sm:px-8">
         <div className="grid lg:grid-cols-[1fr_1.1fr] gap-14 lg:gap-20">
           <Reveal direction="left">
@@ -19,7 +19,7 @@ export function WhyQima() {
               <h2 className="font-display text-3xl sm:text-4xl md:text-[2.75rem] font-bold leading-tight text-balance">
                 {t.why.title}
                 <br />
-                <span className="text-accent">{t.why.titleAccent}</span>
+                <span className="text-cosmic-gradient">{t.why.titleAccent}</span>
               </h2>
 
               <div className="mt-12 grid grid-cols-3 gap-6 max-w-md">

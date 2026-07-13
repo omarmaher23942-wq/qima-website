@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Space_Grotesk, Inter, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/language-context";
+import { CosmicBackground } from "@/components/CosmicBackground";
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -43,7 +44,8 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${inter.variable} ${plexArabic.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-bg text-text">
+      <body className="min-h-full flex flex-col text-text">
+        <CosmicBackground />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>

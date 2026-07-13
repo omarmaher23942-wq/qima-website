@@ -5,18 +5,13 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 interface RevealProps {
   children: ReactNode;
   className?: string;
-  direction?: "up" | "down" | "left" | "right" | "fade";
+  direction?: "up" | "down" | "left" | "right" | "fade" | "spring-up";
   delay?: number;
   duration?: number;
   distance?: number;
   once?: boolean;
 }
 
-/**
- * Scroll-triggered reveal wrapper. Each section can use a different
- * direction/delay to feel distinct from the others, while sharing the
- * same underlying mechanism.
- */
 export function Reveal({
   children,
   className = "",
@@ -53,6 +48,21 @@ export function Reveal({
     observer.observe(el);
     return () => observer.disconnect();
   }, [once]);
+
+  if (direction === "spring-up") {
+    const style = reduced
+      ? undefined
+      : {
+          transition: `opacity 0.35s ease ${delay}ms, transform 0.85s cubic-bezier(0.22, 1.8, 0.36, 1) ${delay}ms`,
+          opacity: visible ? 1 : 0,
+          transform: visible ? "translateY(0)" : `translateY(${distance}px)`,
+        };
+    return (
+      <div ref={ref} className={className} style={style}>
+        {children}
+      </div>
+    );
+  }
 
   const transforms: Record<string, string> = {
     up: `translateY(${distance}px)`,

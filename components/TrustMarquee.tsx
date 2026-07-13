@@ -3,24 +3,27 @@
 import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 import { trustedBrands } from "@/content/trust";
+import { Reveal } from "./Reveal";
 
 export function TrustMarquee() {
   const { t } = useLanguage();
   const doubled = [...trustedBrands, ...trustedBrands];
 
   return (
-    <section className="relative py-20 sm:py-24 overflow-hidden mt-4">
-      <div className="mx-auto max-w-6xl px-6 sm:px-8 mb-10 text-center">
-        <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">
-          {t.trust.eyebrow}
-        </p>
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-balance">
-          {t.trust.title}
-        </h2>
-        <p className="mt-3 text-sm text-text-mute max-w-md mx-auto">
-          {t.trust.sub}
-        </p>
-      </div>
+    <section className="relative py-20 sm:py-24 overflow-hidden">
+      <Reveal direction="fade">
+        <div className="mx-auto max-w-6xl px-6 sm:px-8 mb-10 text-center">
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-3">
+            {t.trust.eyebrow}
+          </p>
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-balance">
+            {t.trust.title}
+          </h2>
+          <p className="mt-3 text-sm text-text-mute max-w-md mx-auto">
+            {t.trust.sub}
+          </p>
+        </div>
+      </Reveal>
 
       <div className="relative">
         <div className="absolute inset-y-0 left-0 w-24 z-10 bg-gradient-to-r from-bg to-transparent" />

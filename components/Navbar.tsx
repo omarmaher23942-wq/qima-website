@@ -1,17 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { useLanguage } from "@/lib/language-context";
 
 const sections = [
-    { id: "services", key: "services" as const },
-    { id: "work", key: "work" as const },
-    { id: "process", key: "process" as const },
-    { id: "about", key: "about" as const },
-  ];
+  { id: "services", key: "services" as const },
+  { id: "work", key: "work" as const },
+  { id: "process", key: "process" as const },
+  { id: "about", key: "about" as const },
+];
 
 export function Navbar() {
-  // تم إضافة toggleLang هنا بافتراض أنها تخرج من نفس الـ Context
   const { t, toggleLang } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,21 +26,54 @@ export function Navbar() {
   }, []);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-4">
+    <header
+      style={{
+        position: "fixed",
+        top: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        paddingTop: 16,
+        paddingLeft: 16,
+        paddingRight: 16,
+      }}
+    >
       <nav
-        className={`glass-nav mx-auto max-w-6xl rounded-2xl px-5 sm:px-6 transition-all duration-500 ${
-          scrolled ? "py-2.5" : "py-3.5"
-        }`}
+        style={{
+          maxWidth: 1152,
+          margin: "0 auto",
+          borderRadius: 16,
+          paddingLeft: 24,
+          paddingRight: 24,
+          paddingTop: scrolled ? 12 : 16,
+          paddingBottom: scrolled ? 12 : 16,
+          transition: "padding 0.4s ease",
+          background:
+            "linear-gradient(180deg, rgba(12,24,21,0.7) 0%, rgba(12,24,21,0.5) 100%)",
+          backdropFilter: "blur(24px) saturate(180%) brightness(1.08)",
+          WebkitBackdropFilter: "blur(24px) saturate(180%) brightness(1.08)",
+          border: "1px solid rgba(168,181,169,0.14)",
+          boxShadow: "0 8px 32px rgba(0,0,0,0.35)",
+        }}
       >
         <div className="flex items-center justify-between">
-          <a
-            href="#top"
-            className="font-display text-lg font-bold tracking-tight text-text"
-          >
-            QIMA<span className="text-accent">.</span>
+          <a href="#top" className="relative inline-flex items-center">
+            <div
+              className="relative"
+              style={{ height: 44, width: 130, flexShrink: 0 }}
+            >
+              <Image
+                src="/qima_logo.png"
+                alt="QIMA"
+                fill
+                priority
+                className="object-contain"
+                style={{ objectPosition: "left center" }}
+              />
+            </div>
           </a>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-9">
             {sections.map((s) => (
               <a
                 key={s.id}
@@ -63,7 +96,7 @@ export function Navbar() {
             
             <a
               href="#contact"
-              className="hidden sm:inline-flex items-center rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-bg hover:bg-accent-soft transition-colors duration-200"
+              className="mercury-border shine-sweep hidden sm:inline-flex items-center rounded-full bg-surface px-5 py-2 text-xs font-semibold text-text hover:bg-surface-high transition-colors duration-200"
             >
               {t.nav.contact}
             </a>
