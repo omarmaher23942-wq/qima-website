@@ -279,8 +279,6 @@ export const copy = {
       tagline: "محتوى يبني الثقة -- ويحول المشاهدين إلى عملاء",
     },
   },
-} as const;
-
-export type CopyType = {
-  [K in keyof typeof copy.en]: typeof copy.en[K];
 };
+
+export type CopyType = typeof copy.en;
