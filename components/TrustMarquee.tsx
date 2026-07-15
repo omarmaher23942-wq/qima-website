@@ -33,15 +33,15 @@ export function TrustMarquee() {
           {doubled.map((brand, i) => (
             <div
               key={i}
-              className="mx-6 flex h-28 w-56 shrink-0 items-center justify-center rounded-xl border border-border bg-white/[0.04] px-8 py-6"
+              className="mx-6 flex h-32 w-64 shrink-0 items-center justify-center rounded-xl border border-border bg-surface-high px-5 py-4"
             >
               <div className="relative h-full w-full">
                 <Image
                   src={brand.logo}
                   alt={brand.name}
                   fill
-                  className="object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
-                  sizes="224px"
+                  className="object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                  sizes="256px"
                 />
               </div>
             </div>

@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Reveal } from "./Reveal";
 import { VideoPlayer } from "./VideoPlayer";
-import { aboutSectionVideo } from "@/content/videos";
+
+const ABOUT_VIDEO_ID = "1209714761";
 
 export function About() {
   const { t } = useLanguage();
@@ -34,11 +35,19 @@ export function About() {
           </div>
 
           <Reveal direction="right" delay={200}>
-            <button
+            <div
+              role="button"
+              tabIndex={0}
               onClick={() => setExpanded(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setExpanded(true);
+                }
+              }}
               onMouseEnter={() => setHovering(true)}
               onMouseLeave={() => setHovering(false)}
-              className="group relative block w-full max-w-sm mx-auto aspect-[9/16] rounded-2xl overflow-hidden transition-all duration-500"
+              className="group relative block w-full aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer transition-all duration-500"
               style={{
                 border: hovering
                   ? "1px solid rgba(168,181,169,0.5)"
@@ -48,18 +57,12 @@ export function About() {
                   : "none",
               }}
             >
-              {hovering || expanded ? (
+              {!expanded && (
                 <VideoPlayer
-                  videoId={aboutSectionVideo}
-                  autoplay
-                  muted={!expanded}
-                  showControls={expanded}
-                />
-              ) : (
-                <img
-                  src={`https://i.ytimg.com/vi/${aboutSectionVideo}/hqdefault.jpg`}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
+                  videoId={ABOUT_VIDEO_ID}
+                  autoplay={hovering}
+                  muted
+                  showControls={false}
                 />
               )}
               {!hovering && !expanded && (
@@ -71,7 +74,7 @@ export function About() {
                   </span>
                 </div>
               )}
-            </button>
+            </div>
           </Reveal>
         </div>
       </div>
@@ -82,11 +85,11 @@ export function About() {
           onClick={() => setExpanded(false)}
         >
           <div
-            className="relative h-[85vh] max-h-[800px] aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl bg-black"
+            className="relative w-full max-w-4xl aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl bg-black"
             onClick={(e) => e.stopPropagation()}
           >
             <VideoPlayer
-              videoId={aboutSectionVideo}
+              videoId={ABOUT_VIDEO_ID}
               onClose={() => setExpanded(false)}
             />
           </div>

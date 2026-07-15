@@ -1,34 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
-
-declare global {
-  interface Window {
-    YT: any;
-    onYouTubeIframeAPIReady: () => void;
-  }
-}
-
-let apiLoadPromise: Promise<void> | null = null;
-
-function loadYouTubeAPI(): Promise<void> {
-  if (apiLoadPromise) return apiLoadPromise;
-  apiLoadPromise = new Promise((resolve) => {
-    if (window.YT && window.YT.Player) {
-      resolve();
-      return;
-    }
-    const prevCallback = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      prevCallback?.();
-      resolve();
-    };
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
-  });
-  return apiLoadPromise;
-}
+import Player from "@vimeo/player";
 
 interface VideoPlayerProps {
   videoId: string;
@@ -46,7 +19,7 @@ export function VideoPlayer({
   onClose,
 }: VideoPlayerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<any>(null);
+  const playerRef = useRef<Player | null>(null);
   const [ready, setReady] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -54,101 +27,78 @@ export function VideoPlayer({
   const [isMuted, setIsMuted] = useState(muted);
   const [showUI, setShowUI] = useState(true);
   const hideTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-  const progressRaf = useRef<number | undefined>(undefined);
 
+  // Create the player once per videoId.
   useEffect(() => {
-    let cancelled = false;
-    loadYouTubeAPI().then(() => {
-      if (cancelled || !containerRef.current) return;
-      playerRef.current = new window.YT.Player(containerRef.current, {
-        videoId,
-        playerVars: {
-          autoplay: autoplay ? 1 : 0,
-          controls: 0,
-          modestbranding: 1,
-          rel: 0,
-          showinfo: 0,
-          iv_load_policy: 3,
-          fs: 0,
-          disablekb: 1,
-          playsinline: 1,
-          mute: muted ? 1 : 0,
-          origin: window.location.origin,
-        },
-        events: {
-          onReady: (e: any) => {
-            setReady(true);
-            setDuration(e.target.getDuration());
-            if (muted) {
-              e.target.mute();
-              setIsMuted(true);
-            } else {
-              e.target.unMute();
-              setIsMuted(false);
-            }
-            if (autoplay) e.target.playVideo();
+    if (!containerRef.current) return;
 
-            // Double-check mute state shortly after playback starts —
-            // some browsers/YT instances force mute on autoplay even
-            // when we explicitly asked for sound.
-            setTimeout(() => {
-              if (!muted && playerRef.current?.isMuted?.()) {
-                playerRef.current.unMute();
-                setIsMuted(false);
-              }
-            }, 300);
-          },
-          onStateChange: (e: any) => {
-            setPlaying(e.data === window.YT.PlayerState.PLAYING);
-            if (e.data === window.YT.PlayerState.PLAYING && !muted) {
-              const actuallyMuted = playerRef.current?.isMuted?.();
-              if (actuallyMuted) {
-                playerRef.current.unMute();
-                setIsMuted(false);
-              }
-            }
-          },
-        },
-      });
+    const player = new Player(containerRef.current, {
+      id: Number(videoId),
+      autopause: false,
+      autoplay: false,
+      muted,
+      controls: false,
+      loop: true,
+      playsinline: true,
+      responsive: false,
     });
+
+    playerRef.current = player;
+    setReady(false);
+
+    player.ready().then(() => {
+      setReady(true);
+    });
+
+    player.getDuration().then((d) => setDuration(d));
+
+    player.on("play", () => setPlaying(true));
+    player.on("pause", () => setPlaying(false));
+    player.on("timeupdate", (data) => setProgress(data.seconds));
+
     return () => {
-      cancelled = true;
-      playerRef.current?.destroy?.();
+      player.unload().catch(() => {});
+      player.destroy().catch(() => {});
+      playerRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoId]);
 
+  // React to autoplay changes (e.g. hover on/off) after the player exists.
   useEffect(() => {
-    function tick() {
-      if (playerRef.current?.getCurrentTime && playing) {
-        setProgress(playerRef.current.getCurrentTime());
-      }
-      progressRaf.current = requestAnimationFrame(tick);
+    if (!ready || !playerRef.current) return;
+    const player = playerRef.current;
+
+    if (autoplay) {
+      player.setMuted(muted).then(() => {
+        setIsMuted(muted);
+        return player.play();
+      }).catch(() => {
+        // Browser blocked autoplay with sound — force mute and retry.
+        player.setMuted(true);
+        setIsMuted(true);
+        player.play().catch(() => {});
+      });
+    } else {
+      player.pause().catch(() => {});
+      player.setCurrentTime(0).catch(() => {});
     }
-    progressRaf.current = requestAnimationFrame(tick);
-    return () => {
-      if (progressRaf.current) cancelAnimationFrame(progressRaf.current);
-    };
-  }, [playing]);
+  }, [autoplay, muted, ready]);
 
   const togglePlay = useCallback(() => {
     if (!playerRef.current) return;
     if (playing) {
-      playerRef.current.pauseVideo();
+      playerRef.current.pause();
     } else {
-      playerRef.current.playVideo();
+      playerRef.current.play();
     }
   }, [playing]);
 
   const toggleMute = useCallback(() => {
     if (!playerRef.current) return;
-    if (isMuted) {
-      playerRef.current.unMute();
-      setIsMuted(false);
-    } else {
-      playerRef.current.mute();
-      setIsMuted(true);
-    }
+    const next = !isMuted;
+    playerRef.current.setMuted(next);
+    setIsMuted(next);
   }, [isMuted]);
 
   const seek = useCallback(
@@ -156,7 +106,7 @@ export function VideoPlayer({
       if (!playerRef.current || !duration) return;
       const rect = e.currentTarget.getBoundingClientRect();
       const ratio = (e.clientX - rect.left) / rect.width;
-      playerRef.current.seekTo(ratio * duration, true);
+      playerRef.current.setCurrentTime(ratio * duration);
     },
     [duration]
   );
@@ -190,13 +140,7 @@ export function VideoPlayer({
     >
       <div
         ref={containerRef}
-        className="absolute [&_iframe]:w-full [&_iframe]:h-full pointer-events-none"
-        style={{
-          top: "-7.5%",
-          left: "-7.5%",
-          width: "115%",
-          height: "115%",
-        }}
+        className="absolute inset-0 [&_iframe]:w-full [&_iframe]:h-full pointer-events-none"
       />
 
       {!ready && (

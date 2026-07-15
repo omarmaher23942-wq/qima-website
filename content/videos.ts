@@ -3,18 +3,19 @@ export interface VideoItem {
 }
 
 // Reels / Shorts — displayed in the main square gallery grid
-export const videos: VideoItem[] = [
-  { id: "qLHc-tkLyB0" },
-  { id: "6zaHdvgAFTs" },
-  { id: "3Ay_zdpFn_k" },
-  { id: "Le2djtePZ6Q" },
-  { id: "ZbMZ6MDZxWM" },
-  { id: "G75CSuZ-ApE" },
-  { id: "BdCWO7miuuU" },
-  { id: "ViW-hvGjxKk" },
-  { id: "aj_J76HikFs" },
-  { id: "ykDyh1ZEjdE" },
-  { id: "qncZ3UolFOw" },
+export const videos = [
+  { id: "1209707150" },
+  { id: "1209654503" },
+  { id: "1209657096" },
+  { id: "1209657583" },
+  { id: "1209658881" },
+  { id: "1209659109" },
+  { id: "1209657401" },
+  { id: "1209658974" },
+  { id: "1209675658" },
+  { id: "1209659282" },
+  { id: "1209659198" },
+  { id: "1209659065" },
 ];
 
 // Long-form / horizontal work shown in its own dedicated section

@@ -18,21 +18,6 @@ const socialLinks = [
     href: "https://www.youtube.com/@ahmedmaher11-18",
     icon: YouTubeIcon,
   },
-  {
-    name: "Mostaql",
-    href: "https://mostaql.com/u/ahmedmaher7720/portfolio",
-    icon: MostaqlIcon,
-  },
-  {
-    name: "TikTok",
-    href: "https://www.tiktok.com/@ahmed_maherrrrr?is_from_webapp=1&sender_device=pc",
-    icon: TikTokIcon,
-  },
-  {
-    name: "Behance",
-    href: "https://www.behance.net/ahmedmaher499",
-    icon: BehanceIcon,
-  },
 ];
 
 export function Footer() {
@@ -85,42 +70,22 @@ function WhatsAppIcon() {
     </svg>
   );
 }
+
 function InstagramIcon() {
   return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
       <rect x="3" y="3" width="18" height="18" rx="5" />
       <circle cx="12" cy="12" r="4" />
       <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
     </svg>
   );
 }
+
 function YouTubeIcon() {
   return (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
       <path d="M23 12s0-3.5-.45-5.2a2.9 2.9 0 00-2-2C18.9 4.3 12 4.3 12 4.3s-6.9 0-8.55.5a2.9 2.9 0 00-2 2C1 8.5 1 12 1 12s0 3.5.45 5.2a2.9 2.9 0 002 2c1.65.5 8.55.5 8.55.5s6.9 0 8.55-.5a2.9 2.9 0 002-2C23 15.5 23 12 23 12z" fillOpacity="0" stroke="currentColor" strokeWidth="1.6" />
       <path d="M9.75 15.5v-7l6 3.5-6 3.5z" />
-    </svg>
-  );
-}
-function MostaqlIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <path d="M4 19V5l8 6 8-6v14" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-function TikTokIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M16.5 2h-3.2v13.6a2.7 2.7 0 11-2.7-2.7c.2 0 .5 0 .7.1V9.7a6 6 0 105.2 5.9V8.4a7.6 7.6 0 004.7 1.6V6.8a4.2 4.2 0 01-4.7-4.8z" />
-    </svg>
-  );
-}
-function BehanceIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
-      <rect x="2" y="7" width="8" height="6" rx="1" />
-      <path d="M2 13h8M13 10c0-1.5 1-3 3.5-3S20 8.5 20 10.5c0 .3 0 .6-.1.9h-6.4M13.5 14a3.5 3.5 0 006.5 1.5" strokeLinecap="round" />
     </svg>
   );
 }

@@ -180,11 +180,11 @@ select:focus-visible {
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  animation: mercury-flow 6s ease infinite;
+  animation: mercury-border-flow 6s ease infinite;
   pointer-events: none;
   z-index: -1;
 }
-@keyframes mercury-flow {
+@keyframes mercury-border-flow {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
 }
@@ -238,3 +238,69 @@ select:focus-visible {
 .text-balance {
   text-wrap: balance;
 }
+
+/* ============================================================
+   Simple green frame with a traveling light effect on hover.
+   Default: plain thin green border.
+   Hover: a thick silver light chases around the full perimeter,
+   fully covering the frame's width as it passes.
+   ============================================================ */
+
+   .mercury-frame {
+    position: relative;
+    border-radius: 1rem;
+    padding: 3px;
+    background: var(--qima-accent);
+  }
+  
+  .mercury-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 3px;
+    background: conic-gradient(
+      from var(--mercury-frame-angle, 0deg),
+      transparent 0%,
+      transparent 70%,
+      #d4d8dc 78%,
+      #f4f7fa 85%,
+      #ffffff 90%,
+      #f4f7fa 95%,
+      #d4d8dc 100%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    animation: mercury-frame-flow 8s linear infinite;
+    z-index: 1;
+    pointer-events: none;
+  }
+  
+  .mercury-frame:hover::before {
+    opacity: 1;
+  }
+  
+  .mercury-frame > button {
+    position: relative;
+    z-index: 2;
+  }
+  
+  @property --mercury-frame-angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  
+  @keyframes mercury-frame-flow {
+    from {
+      --mercury-frame-angle: 0deg;
+    }
+    to {
+      --mercury-frame-angle: 360deg;
+    }
+  }

@@ -72,6 +72,10 @@ export const copy = {
         ads: "Ads",
       },
     },
+    longForm: {
+      eyebrow: "Long-form Work",
+      title: "A glimpse into long-form work",
+    },
     trust: {
       eyebrow: "Trusted by",
       title: "Trusted by creators, brands, and companies",
@@ -178,7 +182,7 @@ export const copy = {
     },
     why: {
       eyebrow: "ليه قمة؟",
-      title: "إحنا مش بس بنمونتاج",
+      title: "إحنا مش بس بنمنتج",
       titleAccent: "إحنا فريق إنتاج كامل",
       points: [
         {
@@ -210,6 +214,10 @@ export const copy = {
         reels: "ريلز وشورتس",
         ads: "إعلانات",
       },
+    },
+    longForm: {
+      eyebrow: "الأعمال الطويلة",
+      title: "لمحة من أعمالنا الطويلة",
     },
     trust: {
       eyebrow: "موثوق من قبل",

@@ -23,41 +23,34 @@ export function WorkGallery() {
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-6xl mx-auto">
           {videos.map((video, i) => (
             <Reveal key={video.id} direction="up" delay={(i % 8) * 70}>
-              <button
-                onMouseEnter={() => setHoveredVideo(video.id)}
-                onMouseLeave={() => setHoveredVideo(null)}
-                onClick={() => setActiveVideo(video.id)}
-                className="group relative block w-full overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 aspect-[9/16]"
-              >
-                {hoveredVideo === video.id ? (
+              <div className="mercury-frame rounded-2xl">
+                <button
+                  onMouseEnter={() => setHoveredVideo(video.id)}
+                  onMouseLeave={() => setHoveredVideo(null)}
+                  onClick={() => setActiveVideo(video.id)}
+                  className="group relative block w-full overflow-hidden rounded-2xl aspect-[9/16]"
+                >
                   <VideoPlayer
                     videoId={video.id}
-                    autoplay
+                    autoplay={hoveredVideo === video.id}
                     muted
                     showControls={false}
                   />
-                ) : (
-                  <img
-                    src={`https://i.ytimg.com/vi/${video.id}/hqdefault.jpg`}
-                    alt=""
-                    className="absolute inset-0 h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                )}
 
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-70 group-hover:opacity-40 transition-opacity pointer-events-none" />
 
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </span>
-                </div>
-              </button>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span className="flex h-11 w-11 items-center justify-center rounded-full bg-white/10 backdrop-blur-md text-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </span>
+                  </div>
+                </button>
+              </div>
             </Reveal>
           ))}
         </div>
