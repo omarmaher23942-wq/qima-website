@@ -15,7 +15,7 @@ export const testimonials: Testimonial[] = [
     id: "amin-sheko",
     name: "Amin Sheko",
     avatar: "/cc/testimonials/avatars/أمين شيكو.jpeg",
-    audio: "/cc/testimonials/voices/Amin Sheko.mp3",
+    audio: "/cc/testimonials/voices/amin-sheko.mp3",
     hasRealPhoto: true,
     socials: {
       tiktok: "https://www.tiktok.com/@amin.shiko?is_from_webapp=1&sender_device=pc",
@@ -26,7 +26,7 @@ export const testimonials: Testimonial[] = [
     id: "chef-khaled-qatrawi",
     name: "Chef Khaled Qatrawi",
     avatar: "/cc/testimonials/avatars/شيف خالد كتراوي.jpg",
-    audio: "/cc/testimonials/voices/Chef khaled Qatrawi.mp3",
+    audio: "/cc/testimonials/voices/chef-khaled-qatrawi.mp3",
     hasRealPhoto: true,
     socials: {
       tiktok: "https://www.tiktok.com/@khaild_qatrawi",
@@ -38,7 +38,7 @@ export const testimonials: Testimonial[] = [
     id: "ahmed-hany",
     name: "Ahmed Hany",
     avatar: "/cc/testimonials/avatars/ahmed_hany.jpeg",
-    audio: "/cc/testimonials/voices/Ahmed Hany.mp3",
+    audio: "/cc/testimonials/voices/ahmed-hany.mp3",
     hasRealPhoto: true,
     socials: {
       tiktok: "https://www.tiktok.com/@ahmed_hany_rashdan",
