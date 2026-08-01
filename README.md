@@ -40,16 +40,9 @@ This is a custom-built Next.js site designed and developed end-to-end — no tem
 
 ---
 
-## Running locally
+## Running on https://qima-ten.vercel.app/
 
-```bash
-npm install
-npm run dev
-```
 
-Then open `http://localhost:3000`.
-
----
 
 ## Contact
 
