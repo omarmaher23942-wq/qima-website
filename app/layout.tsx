@@ -48,6 +48,7 @@ export default function RootLayout({
       className={`${spaceGrotesk.variable} ${inter.variable} ${plexArabic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col text-text">
+        <a href="#services" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:start-3 focus:z-[70] focus:rounded-full focus:bg-accent focus:px-4 focus:py-2 focus:text-bg">Skip to content</a>
         <CosmicBackground />
         <LanguageProvider>{children}</LanguageProvider>
       </body>

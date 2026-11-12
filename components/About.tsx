@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Reveal } from "./Reveal";
 import { VideoPlayer } from "./VideoPlayer";
+import { useModal } from "@/lib/use-modal";
 
 const ABOUT_VIDEO_ID = "1209714761";
 
@@ -11,6 +12,7 @@ export function About() {
   const { t } = useLanguage();
   const [hovering, setHovering] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  useModal(expanded, () => setExpanded(false));
 
   return (
     <section id="about" className="relative py-28 sm:py-36 overflow-hidden">

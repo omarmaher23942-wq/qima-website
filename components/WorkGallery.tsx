@@ -4,10 +4,14 @@ import { useState } from "react";
 import { videos } from "@/content/videos";
 import { VideoPlayer } from "./VideoPlayer";
 import { Reveal } from "./Reveal";
+import { useModal } from "@/lib/use-modal";
+import { useLanguage } from "@/lib/language-context";
 
 export function WorkGallery() {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
   const [hoveredVideo, setHoveredVideo] = useState<string | null>(null);
+  const { t } = useLanguage();
+  useModal(!!activeVideo, () => setActiveVideo(null));
 
   return (
     <section id="work" className="relative py-28 sm:py-36">
@@ -15,10 +19,10 @@ export function WorkGallery() {
         <Reveal direction="right">
           <div className="mb-12 text-center">
             <p className="text-xs font-semibold tracking-[0.2em] uppercase text-accent mb-4">
-              Selected Work
+              {t.work.eyebrow}
             </p>
             <h2 className="font-display text-3xl sm:text-4xl md:text-[2.75rem] font-bold text-balance">
-              A few of the results
+              {t.work.title}
             </h2>
           </div>
         </Reveal>
@@ -31,7 +35,7 @@ export function WorkGallery() {
                   onMouseEnter={() => setHoveredVideo(video.id)}
                   onMouseLeave={() => setHoveredVideo(null)}
                   onClick={() => setActiveVideo(video.id)}
-                  className="group relative block w-full overflow-hidden rounded-2xl aspect-[9/16]"
+                  aria-label="Play video" className="group relative block w-full overflow-hidden rounded-2xl aspect-[9/16]"
                 >
                   <VideoPlayer
                     videoId={video.id}

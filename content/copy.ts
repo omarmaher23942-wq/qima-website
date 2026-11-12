@@ -139,6 +139,16 @@ export const copy = {
         submit: "Send",
       },
     },
+    faq: {
+      eyebrow: "FAQ",
+      title: "Questions we hear often",
+      items: [
+        { q: "How fast do you deliver?", a: "Reels and shorts can land in under two hours. Long-form depends on length, usually 2-4 days." },
+        { q: "How many revisions are included?", a: "We refine until you are happy, with a dedicated review pass before every delivery." },
+        { q: "Do you work with creators outside Egypt?", a: "Yes. We work with creators and brands across multiple markets in Arabic and English." },
+        { q: "How do I start?", a: "Fill the 30-second form or message us on WhatsApp. We reply with a plan." },
+      ],
+    },
     footer: {
       rights: "All rights reserved",
       tagline: "Content that builds trust -- and turns viewers into customers",
@@ -281,6 +291,16 @@ export const copy = {
         contactPlaceholder: "اكتب وسيلة التواصل",
         submit: "إرسال",
       },
+    },
+    faq: {
+      eyebrow: "أسئلة شائعة",
+      title: "أسئلة بنسمعها كتير",
+      items: [
+        { q: "بتسلموا في كام وقت؟", a: "الريلز والشورتس ممكن توصل في أقل من ساعتين، والفيديوهات الطويلة غالبًا من ٢ لـ ٤ أيام حسب المدة." },
+        { q: "كام تعديل مشمول؟", a: "بنعدل لحد ما تكون راضي، ومع مراجعة داخلية قبل كل تسليم." },
+        { q: "بتشتغلوا مع صناع محتوى برا مصر؟", a: "أيوه، اشتغلنا مع صناع محتوى وبراندات في أسواق كتير بالعربي والإنجليزي." },
+        { q: "أبدأ إزاي؟", a: "املا الفورم في ٣٠ ثانية أو كلمنا على واتساب وهنرد عليك بخطة." },
+      ],
     },
     footer: {
       rights: "جميع الحقوق محفوظة",

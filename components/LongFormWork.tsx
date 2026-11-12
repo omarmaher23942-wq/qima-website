@@ -3,12 +3,14 @@
 import { useState } from "react";
 import { useLanguage } from "@/lib/language-context";
 import { Reveal } from "./Reveal";
+import { useModal } from "@/lib/use-modal";
 
 const LONG_FORM_VIDEO_ID = "5m0Fb2lV8tw";
 
 export function LongFormWork() {
   const { t } = useLanguage();
   const [expanded, setExpanded] = useState(false);
+  useModal(expanded, () => setExpanded(false));
 
   return (
     <section className="relative py-28 sm:py-36">
@@ -26,6 +28,7 @@ export function LongFormWork() {
 
         <Reveal direction="up" delay={100}>
           <button
+            aria-label="Play long-form video"
             onClick={() => setExpanded(true)}
             className="group relative block w-full max-w-4xl mx-auto overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:border-accent/50 aspect-video"
           >
