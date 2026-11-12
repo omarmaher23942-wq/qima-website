@@ -23,6 +23,9 @@ const plexArabic = IBM_Plex_Sans_Arabic({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://qima-ten.vercel.app"),
+  icons: { icon: "/logo.png" },
+  twitter: { card: "summary_large_image", title: "QIMA — Content that earns trust" },
   title: "QIMA — Content that earns trust, then earns customers",
   description:
     "QIMA helps creators, brands, and companies turn raw footage into content that performs — through sharp editing, platform literacy, and marketing instinct.",

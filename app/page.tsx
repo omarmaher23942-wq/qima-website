@@ -11,6 +11,8 @@ import { About } from "@/components/About";
 import { Process } from "@/components/Process";
 import { Contact } from "@/components/Contact";
 import { Footer } from "@/components/Footer";
+import { LeadForm } from "@/components/LeadForm";
+import { ScrollProgress } from "@/components/ScrollProgress";
 
 export default function Home() {
   return (
@@ -26,8 +28,10 @@ export default function Home() {
       <Testimonials />
       <About />
       <Process />
+      <LeadForm />
       <Contact />
       <Footer />
+      <ScrollProgress />
     </main>
   );
 }
