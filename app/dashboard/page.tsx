@@ -3,26 +3,39 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { Users, TrendingUp, CheckCircle2, Download, Trash2, ArrowLeft } from "lucide-react";
-import type { Lead } from "@/components/LeadForm";
-import { LEADS_KEY } from "@/lib/site";
+import type { LeadRow } from "@/db/schema";
+type Lead = Omit<LeadRow, "createdAt"> & { createdAt: string };
 
-const STATUSES: Lead["status"][] = ["new", "contacted", "won"];
+const STATUSES = ["new", "contacted", "won"];
 
 export default function Dashboard() {
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [q, setQ] = useState("");
-  const [filter, setFilter] = useState<"all" | Lead["status"]>("all");
-
-  useEffect(() => {
-    try {
-      setLeads(JSON.parse(localStorage.getItem(LEADS_KEY) || "[]"));
-    } catch {}
-  }, []);
-
-  function save(next: Lead[]) {
-    setLeads(next);
-    localStorage.setItem(LEADS_KEY, JSON.stringify(next));
+  const [pw, setPw] = useState("");
+  const [authed, setAuthed] = useState(false);
+  const [err, setErr] = useState("");
+  const hdr = () => ({ "Content-Type": "application/json", Authorization: `Bearer ${sessionStorage.getItem("qima-admin") || ""}` });
+  async function load() {
+    const r = await fetch("/api/admin/leads", { headers: hdr() });
+    if (!r.ok) { setAuthed(false); return false; }
+    setLeads((await r.json()).leads); setAuthed(true); return true;
   }
+  async function login(e: React.FormEvent) {
+    e.preventDefault(); sessionStorage.setItem("qima-admin", pw);
+    if (!(await load())) setErr("Wrong password");
+  }
+  async function patch(id: number, status: string) {
+    setLeads((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
+    await fetch("/api/admin/leads", { method: "PATCH", headers: hdr(), body: JSON.stringify({ id, status }) });
+  }
+  async function remove(id: number) {
+    setLeads((l) => l.filter((x) => x.id !== id));
+    await fetch("/api/admin/leads", { method: "DELETE", headers: hdr(), body: JSON.stringify({ id }) });
+  }
+  const [q, setQ] = useState("");
+  const [filter, setFilter] = useState<string>("all");
+
+  useEffect(() => { load(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const shown = useMemo(
     () =>
@@ -42,7 +55,7 @@ export default function Dashboard() {
 
   function exportCsv() {
     const rows = [["name", "service", "budget", "contact", "status", "date"],
-      ...leads.map((l) => [l.name, l.service, l.budget, l.contact, l.status, new Date(l.at).toISOString()])];
+      ...leads.map((l) => [l.name, l.service, l.budget, l.contact, l.status, l.createdAt])];
     const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
     const a = document.createElement("a");
     a.href = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
@@ -57,6 +70,18 @@ export default function Dashboard() {
     { icon: TrendingUp, label: "Conversion", value: leads.length ? `${Math.round((won / leads.length) * 100)}%` : "0%" },
   ];
 
+  if (!authed)
+    return (
+      <main className="relative z-10 mx-auto max-w-sm px-6 py-32" dir="ltr">
+        <form onSubmit={login} className="glass-surface rounded-2xl p-8 space-y-4">
+          <h1 className="font-display text-2xl font-bold">QIMA Admin</h1>
+          <input type="password" autoFocus value={pw} onChange={(e) => setPw(e.target.value)} placeholder="Password" className="w-full rounded-xl border border-border bg-transparent px-4 py-3 text-sm outline-none focus:border-accent" />
+          {err && <p className="text-xs text-red-400">{err}</p>}
+          <button className="w-full rounded-full bg-accent py-3 text-sm font-semibold text-bg">Sign in</button>
+        </form>
+      </main>
+    );
+
   return (
     <main className="relative z-10 mx-auto max-w-6xl px-6 py-10" dir="ltr">
       <div className="flex items-center justify-between mb-8">
@@ -65,7 +90,7 @@ export default function Dashboard() {
             <ArrowLeft size={14} /> Site
           </Link>
           <h1 className="font-display text-3xl font-bold mt-2">Leads Dashboard</h1>
-          <p className="text-xs text-text-faint mt-1">Stored in this browser (localStorage). Connect Supabase to sync across devices.</p>
+          <p className="text-xs text-text-faint mt-1">Live data from Neon Postgres (Drizzle).</p>
         </div>
         <button onClick={exportCsv} className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-xs hover:border-accent">
           <Download size={14} /> Export CSV
@@ -118,12 +143,12 @@ export default function Dashboard() {
                     <td className="text-text-mute">{l.budget || "—"}</td>
                     <td className="text-text-mute">{l.contact}</td>
                     <td>
-                      <select value={l.status} onChange={(e) => save(leads.map((x) => x.id === l.id ? { ...x, status: e.target.value as Lead["status"] } : x))}
+                      <select value={l.status} onChange={(e) => patch(l.id, e.target.value)}
                         className="bg-bg border border-border rounded-full px-2 py-1">
                         {STATUSES.map((s) => <option key={s}>{s}</option>)}
                       </select>
                     </td>
-                    <td><button aria-label="Delete" onClick={() => save(leads.filter((x) => x.id !== l.id))} className="text-text-faint hover:text-red-400"><Trash2 size={14} /></button></td>
+                    <td><button aria-label="Delete" onClick={() => remove(l.id)} className="text-text-faint hover:text-red-400"><Trash2 size={14} /></button></td>
                   </tr>
                 ))}
               </tbody>
